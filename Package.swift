@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 import PackageDescription
 
 let package = Package(
@@ -16,5 +16,6 @@ let package = Package(
         .testTarget(name: "EntitlementCoreTests", dependencies: ["EntitlementCore"]),
         .testTarget(name: "SubscriptionKitTests", dependencies: ["SubscriptionKit"]),
         .testTarget(name: "PurchaseKitTests", dependencies: ["PurchaseKit"]),
-    ]
+    ],
+    swiftLanguageModes: [.v6]
 )

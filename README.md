@@ -3,7 +3,7 @@
 > App Store subscriptions, one-time purchases, and app-managed trials without a third-party SDK or a cut of every sale.
 
 [![CI](https://github.com/slgoodrich/paywall-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/slgoodrich/paywall-kit/actions/workflows/ci.yml)
-![Swift 5.9](https://img.shields.io/badge/Swift-5.9-orange.svg)
+![Swift 6](https://img.shields.io/badge/Swift-6-orange.svg)
 ![Platforms](https://img.shields.io/badge/platforms-iOS%2017%20%7C%20macOS%2014-blue.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-green.svg)
 
@@ -180,7 +180,7 @@ Test offline with an Xcode StoreKit Configuration file: **File → New → File�
 
 ## Requirements
 
-iOS 17+ / macOS 14+, Swift 5.9+. No third-party dependencies.
+iOS 17+ / macOS 14+ at runtime. Building requires Swift 6 (Xcode 16+): the package compiles in the Swift 6 language mode with complete strict concurrency. No third-party dependencies.
 
 ## Contributing
 

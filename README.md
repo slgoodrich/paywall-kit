@@ -11,7 +11,7 @@ PaywallKit is a thin, readable StoreKit 2 wrapper for indie iOS and macOS apps. 
 
 - **Zero dependencies.** It wraps StoreKit 2, not another vendor's SDK.
 - **No per-sale fee.** You already pay Apple's cut. That's the only cut.
-- **~565 lines you can read in one sitting.** No black box between you and the App Store. 40 tests included.
+- **~400 lines of code you can read in one sitting.** No black box between you and the App Store. 40 tests included.
 - **Three composable products.** Import only the layer your app needs.
 - **The trial Apple won't give you.** A one-time purchase can't carry a StoreKit trial, so `PurchaseKit` runs the clock itself: a Keychain trial marker plus a pure, tested access resolver, honest about what it can and can't enforce.
 

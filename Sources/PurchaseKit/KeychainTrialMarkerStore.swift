@@ -51,6 +51,10 @@ public struct KeychainTrialMarkerStore: TrialMarkerStore {
         }
         var query = baseQuery
         query[kSecValueData as String] = data
+        // Device-only (no iCloud sync) so the trial survives a same-device
+        // reinstall but can't ride Keychain sync to a second device, and
+        // AfterFirstUnlock so a background launch can still read it. Set on iOS
+        // only; macOS uses the login keychain's default accessibility.
         #if os(iOS)
             query[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
         #endif

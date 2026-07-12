@@ -29,6 +29,8 @@ public final class EntitlementStore {
         purchasedProductIDs.contains(productID)
     }
 
+    // `nonisolated(unsafe)`: written once in `init`, read once in the nonisolated
+    // `deinit`, never concurrently, so it needs no isolation and is safe as-is.
     @ObservationIgnored private nonisolated(unsafe) var updatesTask: Task<Void, Never>?
 
     public init(productIDs: [String]) {
@@ -49,6 +51,8 @@ public final class EntitlementStore {
         return store
     }
 
+    /// `Transaction.updates` never completes on its own, so cancel the listener
+    /// here or it outlives the store.
     deinit { updatesTask?.cancel() }
 
     /// Fetches products (preserving the order of `productIDs`) and current entitlements.
@@ -118,6 +122,10 @@ public final class EntitlementStore {
         hasResolvedEntitlements = true
     }
 
+    /// Applies a verified transaction to the entitlement set. Unverified results
+    /// are ignored; a revoked transaction (refund, Family Sharing removal) drops
+    /// the entitlement. `finish()` tells StoreKit the transaction is handled so it
+    /// is not redelivered through `Transaction.updates` on the next launch.
     private func handle(_ verification: VerificationResult<Transaction>) async {
         guard case let .verified(transaction) = verification else { return }
         if transaction.revocationDate == nil {

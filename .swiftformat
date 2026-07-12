@@ -1,0 +1,9 @@
+# SwiftFormat owns pure formatting; SwiftLint owns lint smells.
+--swiftversion 5.9
+--maxwidth 120
+
+# Keep intentional one-liners intact; keep wrapped-condition braces inline
+# (SwiftLint's opening_brace rule owns brace placement).
+--disable wrapPropertyBodies,wrapIfStatementBodies,wrapMultilineStatementBraces
+
+--exclude .build

@@ -2,7 +2,7 @@
 
 > App Store subscriptions, one-time purchases, and app-managed trials without a third-party SDK or a cut of every sale.
 
-[![CI](https://github.com/slgoodrich-dev/paywall-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/slgoodrich-dev/paywall-kit/actions/workflows/ci.yml)
+[![CI](https://github.com/slgoodrich/paywall-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/slgoodrich/paywall-kit/actions/workflows/ci.yml)
 ![Swift 5.9](https://img.shields.io/badge/Swift-5.9-orange.svg)
 ![Platforms](https://img.shields.io/badge/platforms-iOS%2017%20%7C%20macOS%2014-blue.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-green.svg)
@@ -13,6 +13,7 @@ PaywallKit is a thin, readable StoreKit 2 wrapper for indie iOS and macOS apps. 
 - **No per-sale fee.** You already pay Apple's cut. That's the only cut.
 - **~565 lines you can read in one sitting.** No black box between you and the App Store. 40 tests included.
 - **Three composable products.** Import only the layer your app needs.
+- **The trial Apple won't give you.** A one-time purchase can't carry a StoreKit trial, so `PurchaseKit` runs the clock itself: a Keychain trial marker plus a pure, tested access resolver, honest about what it can and can't enforce.
 
 ## What you're replacing
 
@@ -39,18 +40,20 @@ PaywallKit draws that line and gives you a product for each side, plus the share
 
 A subscription app takes `EntitlementCore + SubscriptionKit`. A one-time-purchase app with a trial takes `EntitlementCore + PurchaseKit`. Neither kit depends on the other.
 
+Consumables (coins, credits, tokens) are a third shape PaywallKit leaves alone on purpose: a balance you spend down wants a server-side ledger, not an ownership flag. Reach for a backend, not this.
+
 ## Install
 
 In Xcode: **File → Add Package Dependencies…** and paste:
 
 ```
-https://github.com/slgoodrich-dev/paywall-kit
+https://github.com/slgoodrich/paywall-kit
 ```
 
 Or in `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/slgoodrich-dev/paywall-kit.git", from: "1.0.0")
+.package(url: "https://github.com/slgoodrich/paywall-kit.git", from: "1.0.0")
 ```
 
 Then depend on the products you use:
@@ -125,6 +128,10 @@ case .expired:                  softLock() // you decide what .expired disables
 
 `resolveAccess` is a pure function with a fixed, documented truth table, so it is trivial to unit test with no StoreKit or Keychain needed.
 
+### Honest limits of an app-managed trial
+
+An app-managed trial is not tamper-proof, and PaywallKit does not pretend otherwise. A wiped-device reinstall, a system-clock rollback, or a second device each starts the trial over. The Keychain marker blocks the low-effort path (a same-device reinstall) and nothing more. This is inherent to the model: Apple offers no server-backed trial for non-consumables. It is fine for a paid indie audience. It is not a license-enforcement system, so don't ship it as one.
+
 ## What's in the box
 
 ### EntitlementCore
@@ -170,10 +177,6 @@ await store.purchase(productID: "pro.yearly", options: [.appAccountToken(userID)
 ```
 
 Test offline with an Xcode StoreKit Configuration file: **File → New → File… → StoreKit Configuration File**, then select it under **Product → Scheme → Edit Scheme → Run → Options**.
-
-## Honest limits of an app-managed trial
-
-An app-managed trial is not tamper-proof, and PaywallKit does not pretend otherwise. A wiped-device reinstall, a system-clock rollback, or a second device each starts the trial over. The Keychain marker blocks the low-effort path (a same-device reinstall) and nothing more. This is inherent to the model: Apple offers no server-backed trial for non-consumables. It is fine for a paid indie audience. It is not a license-enforcement system, so don't ship it as one.
 
 ## Requirements
 
